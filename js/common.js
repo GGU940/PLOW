@@ -1,11 +1,11 @@
 const category3 = [
     //전체 카테고리3을 출력해보니 100개가 나와서.. 서비스랑 어울리는 것들을 추리고, 비슷한것끼리 묶었습니다
     ["스포츠/운동/레저", ["실내스포츠", 'PT/GX', "농구/축구/야구", "그룹운동", "요가/필라테스", "헬스/PT", "레저/액티비티", "야외스포츠"]],
+    ["음악/공연예술", ["보컬", "악기", "댄스", "연기/무용/뮤지컬", "작곡/작사/프로듀싱"]],
     ["미술/공예", ["라탄", "뜨개/자수", "미술", "취미미술", "플라워/가드닝", "향/초/비누", "가죽/목공/도예", "캘리그래피", "종이접기"]],
     ["디지털 창작", ["디지털드로잉", '영상 편집/색보정', "그래픽 디자인", "디자인 툴", '유튜브', '3D']],
-    ["음악/공연예술", ["보컬", "악기", "댄스", "연기/무용/뮤지컬", "작곡/작사/프로듀싱"]],
-    ["개인발전", ['헤어/네일', '퍼스널컬러', '사주/타로', '스킨케어', "메이크업"]],
     ["요리/음식", ["요리/베이킹", "커피/차/술"]],
+    ["개인발전", ['헤어/네일', '퍼스널컬러', '사주/타로', '스킨케어', "메이크업"]],
     ["언어/문학", ["한국어", "기타 외국어", '1:1 영어', "인문", "일본어", "중국어", "영어회화", "글쓰기"]]
 ];
 
@@ -19,9 +19,33 @@ let numOfRows = 12;//한 페이지에 보여질 아이템 갯수
 
 
 
-function pagination(category) {
-
+function pagination() {
+    // 해야함
+    return;
 }
+
+//검색기능
+const searchInput = document.querySelector('.search .inputArea input');
+const searchBtn = document.querySelector('.search .inputArea button');
+
+function searchkeyword() {
+    const searchWord = searchInput.value;
+    searchInput.value = '';//초기화
+    console.log('searchkeyword 작동');
+    const url = new URL(
+        `
+        http://api.kcisa.kr/openapi/API_CIA_081/request?serviceKey=${API_KEY}&keyword=${searchWord}&pageNo=1   
+        `
+    );
+    fetchLists(url);
+}
+searchBtn.addEventListener('click', () => {
+    searchkeyword();
+})
+searchInput.addEventListener('keypress', (e) => {
+    if (e.key !== 'Enter') { return; }
+    searchkeyword();
+})
 
 function renderCate(category3) {
     //category3 삽입
@@ -117,34 +141,32 @@ function renderItems(itemsList) {
 
 
 
-function getListByCate(cateName) {
-    //카테고리 버튼 클릭하면
-    //해당 카테고리 리스트로 업데이트
+// function getListByCate(cateName) {
+//     //카테고리 버튼 클릭하면
+//     //해당 카테고리 리스트로 업데이트
 
 
-    let cateBundles = '';
-    for (let i = 0; i < category3.length; i++) {
-        if (category3[i][0] == cateName) {
-            console.log('test', category3[i][0]);
+//     let cateBundles = '';
+//     for (let i = 0; i < category3.length; i++) {
+//         if (category3[i][0] == cateName) {
+//             console.log('test', category3[i][0]);
 
-            for (let n = 0; n < category3[i][1].length; n++) {
-                if (n == category3[i][1].length - 1) {
-                    cateBundles += category3[i][1][n];
-                } else {
-                    cateBundles += category3[i][1][n] + "+";
-                }
-            }
-        }
-    }
-    console.log('cateBundles', cateBundles);
-    // const url = new URL(
-    //     `http://api.kcisa.kr/openapi/API_CIA_081/request?serviceKey=${API_KEY}&pageNo=1&`
-    // );
+//             for (let n = 0; n < category3[i][1].length; n++) {
+//                 if (n == category3[i][1].length - 1) {
+//                     cateBundles += category3[i][1][n];
+//                 } else {
+//                     cateBundles += category3[i][1][n] + "+";
+//                 }
+//             }
+//         }
+//     }
+//     console.log('cateBundles', cateBundles);
+//     // const url = new URL(
+//     //     `http://api.kcisa.kr/openapi/API_CIA_081/request?serviceKey=${API_KEY}&pageNo=1&`
+//     // );
 
-    // fetchNews(url, itemListByCate);
-
-
-}
+//     // fetchLists(url, itemListByCate);
+//}
 
 function listCount(totalCount) {
     // 총 결과 갯수 
@@ -154,7 +176,7 @@ function listCount(totalCount) {
 
 
 
-async function fetchNews(url) {
+async function fetchLists(url) {
     // try ( 정상적인 경우 ) catch(error){ 에러났을 경우 } 
     try {
         url.searchParams.append('numOfRows', numOfRows);
@@ -163,10 +185,14 @@ async function fetchNews(url) {
         const response = await fetch(url, {
             method: 'GET',
             credentials: "include", // 클라이언트와 서버가 통신할때 쿠키와 같은 인증 정보 값을 공유하겠다는 설정
+            // *** cors 오류 ***
+            // 어제 저녁부터 cors 오류가 계속 났었는데 검색해보다가 일단
+            // 위의 credentials 부분 추가하고, 크롬브라우저에 allow cors 라는 확장프로그램 깔아서 당장은 어찌어찌 해결했습니다..
+            // 찾아봐도 개념이 잘 이해가 안 가서 제대로 해결은 못 했어요 ㅠㅠ
+            // 해결 방법 다뤄주시면 감사하겠습니다
             headers: {
                 accept: 'application/json'
             },
-            // timeout: 13000 // 13초 (단위: 밀리초)
 
         });
         const data = await response.json();
@@ -196,7 +222,7 @@ function getLatestData() {
     //최신뉴스 호출
     const url = new URL(`
     http://api.kcisa.kr/openapi/API_CIA_081/request?serviceKey=${API_KEY}&pageNo=1   `);
-    fetchNews(url);
+    fetchLists(url);
 }
 getLatestData();
 
@@ -206,7 +232,7 @@ getLatestData();
 
 //     const url = new URL(`
 //     http://api.kcisa.kr/openapi/API_CIA_081/request?serviceKey=${API_KEY}&numOfRows=${totalCount}&pageNo=1    `);
-//     // fetchNews(url);/
+//     // fetchLists(url);/
 //     try {
 //         const response = await fetch(url, {
 //             method: 'GET',
