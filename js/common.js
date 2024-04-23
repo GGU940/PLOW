@@ -12,6 +12,8 @@ const API_KEY = '159536c7-599e-4d9f-acfd-8d2f6493f2d7';
 const itemsUl = document.querySelector('.cateListArea .items');
 const cate3BtnCon = document.querySelector('.cate3Btns');
 const conditionBtn = document.querySelector('.conditionBox');
+let numOfRows = 12;
+
 
 function renderCate(category3) {
     //category3 삽입
@@ -60,7 +62,29 @@ conditionBtn.querySelector('p').addEventListener('click', () => {
 
 
 function creatHtml(item) {
-    // //////
+    // ////////html 만들어서 화면에 뿌리기
+    let description = item.description || '설명 없음';
+    let title = item.title || '클래스명 없음';
+    let charge = item.charge ? item.charge.slice(0, 7) : '가격정보 없음';
+    let time = item.time || '시간정보 없음';
+    let address = item.address || '주소정보 없음';
+    let category3 = item.category3 || '카테고리 없음';
+    let headcount = item.headcount || '인원정보 없음';
+    return ` 
+    <li class="item">
+        <div class="descriptionBox">
+        <span class="description">${description}</span>
+        </div>
+        <div class="infoBox">
+            <span class="cate3">${category3}</span>
+            <span class="headcount">${headcount}</span>
+            <strong class='title'>${title}</strong>
+            <span class="address">${address}</span>
+            <span class="time">${time}</span>
+            <strong class='price'>${charge}</strong>
+        </div>
+    </li>
+    `
 }
 
 
@@ -72,6 +96,7 @@ function renderItems(itemsList) {
     const itemsHtml = itemsList.map((item) => {
         return creatHtml(item);
     }).join('');
+    itemsUl.innerHTML = itemsHtml;
 }
 
 
@@ -108,14 +133,14 @@ async function fetchNews(url, cate3 = '') {
 function getLatestData() {
     //최신뉴스 호출
     const url = new URL(`
-    http://api.kcisa.kr/openapi/API_CIA_081/request?serviceKey=${API_KEY}&numOfRows=12&pageNo=1    `);
+    http://api.kcisa.kr/openapi/API_CIA_081/request?serviceKey=${API_KEY}&numOfRows=${numOfRows}&pageNo=1    `);
     fetchNews(url);
 }
 
 getLatestData();
 
 
-//카테고리3 전체 종류 확인용..
+//카테고리3 전체 확인용..
 async function getCate3() {
 
     const url = new URL(`
