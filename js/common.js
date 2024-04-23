@@ -40,7 +40,6 @@ function renderCate(category3) {
                 b.classList.remove('on');
             })
             e.target.classList.add('on');
-            // console.log(e);
         })
         // addClassOn(btn);
     });
