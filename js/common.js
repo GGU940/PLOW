@@ -16,7 +16,13 @@ const conditionBtn = document.querySelector('.conditionBox');
 let numOfRows = 12;//한 페이지에 보여질 아이템 갯수
 
 
-
+// ham 클릭 => nav .active 토글
+const nav = document.querySelector('.hd nav');
+const hamBtn = document.querySelector('.hd .ham');
+hamBtn.addEventListener('click', () => {
+    console.log('click');
+    nav.classList.toggle('active');
+})
 
 
 function pagination() {
