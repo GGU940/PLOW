@@ -13,7 +13,48 @@ const API_KEY = '159536c7-599e-4d9f-acfd-8d2f6493f2d7';
 const itemsUl = document.querySelector('.cateListArea .items');
 const cate3BtnCon = document.querySelector('.cate3Btns');
 const conditionBtn = document.querySelector('.conditionBox');
-let numOfRows = 12;//한 페이지에 보여질 아이템 갯수
+
+//---- pagination----
+let totalCount = 0; //5075개임
+let pageNo = 1;
+let numOfRows = 12; //한 페이지에 보여질 아이템 갯수
+let groupSize = 5;  //5page = 1 group
+
+
+
+function moveToPage(i) {
+    console.log('moveToPage 실행~!~!~');
+    pageNo = i;
+    const url = new URL(`
+http://api.kcisa.kr/openapi/API_CIA_081/request?serviceKey=${API_KEY} `);
+    fetchLists(url, pageNo);
+}
+
+function pagination(pageNo) {
+    // 해야함
+    let totalPage = Math.ceil(totalCount / numOfRows);  //전체 page 수
+    let groupOfPage = Math.ceil(pageNo / numOfRows);      //pageNo가 몇번 그룹인지
+    let firstOfPage = (groupOfPage - 1) * groupSize + 1   //pageGroup에서의 first page
+    let lastOfPage = Math.min(totalPage, groupOfPage * groupSize)  //pageGroup에서의 last page
+
+    let pagiHtml = `<button class='btnPagePrev'> &#8668; </button>`;
+    for (let i = firstOfPage; i <= lastOfPage; i++) {
+        pagiHtml += `<button class= "pgBtn ${i == pageNo ? 'on' : ''} "> ${i} </button>`;
+    }
+    pagiHtml += `<button class='btnPageNext'> &#8669; </button>`;
+
+    document.querySelector('.cateListArea .pg').innerHTML = pagiHtml;
+
+    const pagiBtn = document.querySelectorAll('.pg .pgBtn');
+    console.log(pagiBtn);
+    pagiBtn.forEach(pgBtn => {
+        pgBtn.addEventListener('click', () => {
+            moveToPage(pagiBtn.textContent);
+        })
+    })
+
+}
+
 
 
 // ham 클릭 => nav .active 토글
@@ -24,11 +65,6 @@ hamBtn.addEventListener('click', () => {
     nav.classList.toggle('active');
 })
 
-
-function pagination() {
-    // 해야함
-    return;
-}
 
 //검색기능
 const searchInput = document.querySelector('.search .inputArea input');
@@ -81,8 +117,8 @@ function renderCate(category3) {
             e.target.classList.add('on');
 
             // 카테고리 리스트 업데이트
-            let cateName = e.target.textContent;
-            getListByCate(cateName);
+            // let cateName = e.target.textContent;
+            // getListByCate(cateName);
         })
 
     });
@@ -182,10 +218,11 @@ function listCount(totalCount) {
 
 
 
-async function fetchLists(url) {
+async function fetchLists(url, pageNo = 1) {
     // try ( 정상적인 경우 ) catch(error){ 에러났을 경우 } 
     try {
         url.searchParams.append('numOfRows', numOfRows);
+        url.searchParams.append('pageNo', pageNo);
         // console.log(url);
 
         const response = await fetch(url, {
@@ -205,16 +242,16 @@ async function fetchLists(url) {
 
         // const dataBody = data.response.body
         const dataBody = data.response.body
-        console.log(dataBody.items.item.filter(item => item.category3 === '마케팅'));
+        // console.log(dataBody.items.item.filter(item => item.category3 === '마케팅'));
 
 
         let itemsList = dataBody.items.item;
         renderItems(itemsList);
 
-        let totalCount = dataBody.totalCount;
+        totalCount = dataBody.totalCount;
         listCount(totalCount);
 
-        pagination();
+        pagination(pageNo);
 
 
     } catch (error) {
@@ -227,7 +264,7 @@ async function fetchLists(url) {
 function getLatestData() {
     //최신뉴스 호출
     const url = new URL(`
-    http://api.kcisa.kr/openapi/API_CIA_081/request?serviceKey=${API_KEY}&pageNo=1   `);
+    http://api.kcisa.kr/openapi/API_CIA_081/request?serviceKey=${API_KEY}   `);
     fetchLists(url);
 }
 getLatestData();
