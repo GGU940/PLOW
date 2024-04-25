@@ -436,7 +436,6 @@ button {
 .main .cateListArea .conditionBox.on {
     background-color: var(--point-c-b);
     box-shadow: inset 0 4px 0 var(--base-c-b);
-    padding-left: 1rem;
 }
 
 .main .cateListArea .conditionBox.on ul,
@@ -470,6 +469,7 @@ button {
     color: var(--base-c-b);
     font-weight: bold;
     text-align: right;
+    text-align: center;
 
     text-shadow:
         0 -2px 0 var(--base-c-w),
@@ -480,15 +480,15 @@ button {
         -2px 2px 0 var(--base-c-w),
         2px -2px 0 var(--base-c-w),
         2px 2px 0 var(--base-c-w);
+
+    width: 1.5rem;
 }
 
-.main .cateListArea .conditionBox .inputPrice input {
-    width: 5rem;
+.main .cateListArea .conditionBox input:first-of-type {
+
+    width: 3rem;
 }
 
-.main .cateListArea .conditionBox .inputHeadcount input {
-    width: 2rem;
-}
 
 
 
@@ -586,14 +586,16 @@ button {
     top: 0.25rem;
     left: 0;
     width: calc(100% - 1rem);
-    height: calc(100% - 142px +3rem);
-    overflow-y: hidden;
+    height: 70%;
+    background-color: var(--base-c-lg);
+    border: 2px solid var(--base-c-lg);
+    /* overflow-y: hidden; */
 }
 
 .main section .item .imgBox img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 
@@ -623,7 +625,7 @@ button {
     padding: 0.5rem 0.5rem 1.0rem 0.5rem;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     gap: 0.5rem;
     /* border: 1px solid red; */
 }
@@ -643,6 +645,9 @@ button {
     background-color: var(--base-c-lg);
 }
 
+.main section .item .infoBox .date {
+    width: 100%;
+}
 
 .main section .item a.orgLink {
     position: absolute;
