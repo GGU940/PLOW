@@ -265,7 +265,7 @@ async function fetchLists(url, START_INDEX = 1, CODENAME = ' ', TITLE = ' ', DAT
 
 function getLatestData() {
     //최신 데이터 호출
-    // http://openapi.seoul.go.kr:8088/{API_KEY}/json/culturalEventInfo/${START_INDEX}/${END_INDEX}/${CODENAME}/{TITLE}/{DATE}
+    // http://openapi.seoul.go.kr:8088/{API_KEY}/json/culturalEventInfo/${START_INDEX}/${END_INDEX}/${CODENAME}/${TITLE}/${DATE}
 
     const url = new URL(`
     http://openapi.seoul.go.kr:8088/${API_KEY}/json/culturalEventInfo/  `);
