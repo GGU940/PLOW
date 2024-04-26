@@ -53,8 +53,23 @@
 1. CORS 에러
     * ___임시 해결: 'Allow CORS' 크롬 확장  프로그램을 설치___
     * 참고 블로그: https://inpa.tistory.com/entry/WEB-📚-CORS-💯-정리-해결-방법-👏 
+
+2. url.searchParams.append() 사용 불가(??)
+
+    * url 뒤에 &Key=`value`&Key=`value`& ... 가 아닌 
+    url/`START_INDEX`/`END_INDEX`/`CODENAME`/`TITLE`/`DATE` 의 형태 
+    * 순서도 바뀌면 안 됨
+    * ___해결: (최선책인지 모르겠음)
+
+        ```
+        async function fetchLists(url, START_INDEX = 1, CODENAME = ' ', TITLE = ' ', DATE = ' ') {
+            //  기본값 (값이 없을 경우) : 공백 한 칸
+            url = url + START_INDEX + '/' + END_INDEX + '/' + CODENAME + '/' + TITLE + '/' + DATE
+            //  중략
+        }
+        ```
     
-2. 조건에 해당하는 리스트가 없을 때
+3. 조건에 해당하는 리스트가 없을 때
     * 기존 처리 방법 :  dataList.length == 0 의 조건으로 처리
         ```
         function renderLists(dataList) {
