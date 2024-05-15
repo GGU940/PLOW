@@ -1,5 +1,7 @@
 # PLOW - 문화행사
 
+![mockup](/img/mockup.png)
+
 ### PLOW
 
 > PLOW : PLAY + GROW

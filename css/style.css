@@ -319,8 +319,31 @@ button {
 
 .main .recommendListArea h3 {
   position: absolute;
-  top: 170px;
+  width: calc(100% - 1rem);
+  top: 6rem;
+  right: 50%;
+  transform: translateX(50%);
+  background-color: var(--point-c-b);
+  text-align: center;
+  padding: 1rem;
   z-index: 999;
+  border-radius: 0.5rem;
+  border: 1px solid var(--base-c-b);
+  box-shadow: 0 4px var(--base-c-b);
+  line-height: 120%;
+}
+.main .recommendListArea h3::before {
+  content: "";
+  background-color: var(--point-c-b);
+  border-top: 1px solid var(--base-c-b);
+  border-left: 1px solid var(--base-c-b);
+  display: block;
+  position: absolute;
+  height: 1rem;
+  width: 1rem;
+  transform: rotate(45deg);
+  top: -9px;
+  left: 50%;
 }
 
 .main .recommendListArea .recommendListCon {
@@ -345,7 +368,7 @@ button {
   flex-direction: column;
   gap: 1rem;
   /* border: 6px solid greenyellow; */
-  animation: scrollUp 10s linear infinite;
+  animation: scrollUp 200s linear infinite;
 }
 
 .main .recommendListArea .item {
