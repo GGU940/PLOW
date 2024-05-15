@@ -1,18 +1,24 @@
 # PLOW - 문화행사
 
-### PLOW 
+### PLOW
+
 > PLOW : PLAY + GROW
 
 > 사용자들이 다양한 활동을 통해 재미 뿐만 아니라 성장과 자기개발을 이뤄가도록 독려하는 컨셉의 웹사이트입니다.
 
 ### 문화행사
+
 > 다양한 카테고리가 있다는 전제 하에, [문화행사] 카테고리의 페이지를 구현했습니다.
 
------
+---
+
 #### 진행 기간 | 2024/04/18 ~
------
+
+---
+
 ### API
- 서울시 문화행사정보 : [사이트이동](https://data.seoul.go.kr/dataList/OA-15486/S/1/datasetView.do)
+
+서울시 문화행사정보 : [사이트이동](https://data.seoul.go.kr/dataList/OA-15486/S/1/datasetView.do)
 
     아이템 샘플
       {
@@ -39,58 +45,62 @@
         "IS_FREE": "유료",
         "HMPG_ADDR": "https://culture.seoul.go.kr/culture/culture/cultureEvent/view.do?cultcode=144976&menuNo=200008"
       },
-----
+
+---
+
 ### 주요기능
 
-* 검색어 입력 검색
-* 이번주 주말 가볼만한 행사 리스트 (토요일 기준)
-* 날짜 입력 검색
-* 분야별 필터링 버튼
-* 페이지네이션
------
+- 검색어 입력 검색
+- 이번주 주말 가볼만한 행사 리스트 (토요일 기준)
+- 날짜 입력 검색
+- 분야별 필터링 버튼
+- 페이지네이션
+
+---
 
 ### 주요이슈
+
 1. CORS 에러
-    * ___임시 해결: 'Allow CORS' 크롬 확장  프로그램을 설치___
-    * 참고 블로그: https://inpa.tistory.com/entry/WEB-📚-CORS-💯-정리-해결-방법-👏 
+
+   - **_임시 해결: 'Allow CORS' 크롬 확장 프로그램을 설치_**
+   - 참고 블로그: https://inpa.tistory.com/entry/WEB-📚-CORS-💯-정리-해결-방법-👏
 
 2. url.searchParams.append() 사용 불가(??)
 
-    * url 뒤에 &Key=`value`&Key=`value`& ... 가 아닌 
-    url/`START_INDEX`/`END_INDEX`/`CODENAME`/`TITLE`/`DATE` 의 형태 
-    * 순서도 바뀌면 안 됨
-    * ___해결: (최선책인지 모르겠음)
+   - url 뒤에 &Key=`value`&Key=`value`& ... 가 아닌
+     url/`START_INDEX`/`END_INDEX`/`CODENAME`/`TITLE`/`DATE` 의 형태
+   - 순서도 바뀌면 안 됨
+   - \_\_\_해결: (최선책인지 모르겠음)
 
-        ```
-        async function fetchLists(url, START_INDEX = 1, CODENAME = ' ', TITLE = ' ', DATE = ' ') {
-            //  기본값 (값이 없을 경우) : 공백 한 칸
-            url = url + START_INDEX + '/' + END_INDEX + '/' + CODENAME + '/' + TITLE + '/' + DATE
-            //  중략
-        }
-        ```
-    
+     ```
+     async function fetchLists(url, START_INDEX = 1, CODENAME = ' ', TITLE = ' ', DATE = ' ') {
+         //  기본값 (값이 없을 경우) : 공백 한 칸
+         url = url + START_INDEX + '/' + END_INDEX + '/' + CODENAME + '/' + TITLE + '/' + DATE
+         //  중략
+     }
+     ```
+
 3. 조건에 해당하는 리스트가 없을 때
-    * 기존 처리 방법 :  dataList.length == 0 의 조건으로 처리
-        ```
-        function renderLists(dataList) {
-            if (dataList.length == 0) {
-                listsUl.innerHTML = `<li classList='noList'> 검색 결과가 없습니다 ㅠㅠ </li>`;
-                return;
-            }
-        // 이하 생략 //
-        }
-        ```
-    * 문제점 : 해당 API는 해당 리스트가 없을 경우 그냥 전체 리스트를 출력한다.. ( dataList.length 로 처리가 안 됨 )
-    * ___해결 : 아직 못함___
+   - 기존 처리 방법 : dataList.length == 0 의 조건으로 처리
+     ```
+     function renderLists(dataList) {
+         if (dataList.length == 0) {
+             listsUl.innerHTML = `<li classList='noList'> 검색 결과가 없습니다 ㅠㅠ </li>`;
+             return;
+         }
+     // 이하 생략 //
+     }
+     ```
+   - 문제점 : 해당 API는 해당 리스트가 없을 경우 그냥 전체 리스트를 출력한다.. ( dataList.length 로 처리가 안 됨 )
+   - **_해결 : 아직 못함_**
 
------
+---
 
 ### 아직 개발중인 부분
+
 1. javascript
-    * pagination 기능
-    * 검색바 검색 기능
-    * 추천리스트 세로 슬라이드 애니메이션 무한루프 처리 
-    * ham 버튼 작동
+   - 추천리스트 세로 슬라이드 애니메이션 무한루프 처리
+   - ham 버튼 작동
 2. css
-    * 추천리스트 title 스타일링
-    * nav 스타일링
+   - 추천리스트 title 스타일링
+   - nav 스타일링
